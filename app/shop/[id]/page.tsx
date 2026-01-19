@@ -1,4 +1,3 @@
-import Header from "@/app/components/headers"
 import { Heart } from "lucide-react"
 import VariantButton from "./variantButton"
 import QuantityButton from "./quantityButton"
@@ -8,6 +7,7 @@ interface Product {
     name: string
     price: number
     image: string
+    image_variant: string[]
     category: string
     description: string
     rating: number
@@ -18,58 +18,63 @@ interface Product {
 const products: Record<number, Product> = {
     1: {
         id: 1,
-        name: "Silk Oversized Shirt",
+        name: "Family Set Party Dress",
         price: 280,
-        image: "/luxury-silk-shirt.jpg",
-        category: "tops",
+        image: "/party-wear.jpeg",
+        image_variant: ["/party-wear.jpeg", "/product/party2.jpg"],
+        category: "party",
         description:
             "Experience timeless elegance with our signature silk oversized shirt. Crafted from premium 100% mulberry silk, this versatile piece features a relaxed silhouette perfect for layering or wearing as a standalone statement. Delicate mother-of-pearl buttons and hand-finished seams elevate the everyday essential.",
         rating: 5,
         sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-        colors: ["Ivory", "Sage", "Charcoal", "Blush"],
+        colors: ["Pink", "Purple", "Red"],
     },
     2: {
         id: 2,
-        name: "Tailored Wool Trousers",
+        name: "Tamang Cultural Bridal Lehenga",
         price: 320,
-        image: "/luxury-wool-trousers.jpg",
-        category: "bottoms",
+        image: "/tamang-cultural-dress.jpg",
+        image_variant: ["/tamang-cultural-dress.jpg"],
+        category: "cultural",
         description:
             "Impeccable tailoring meets modern comfort. These wool trousers are constructed from fine Italian wool with a subtle stretch for all-day wear. The high-rise waist and straight leg create a flattering silhouette while hidden pockets add practical elegance.",
         rating: 5,
         sizes: ["XS", "S", "M", "L", "XL"],
-        colors: ["Black", "Navy", "Camel", "Gray"],
+        colors: ["Red", "Brown"],
     },
     3: {
         id: 3,
-        name: "Cashmere Knit Sweater",
+        name: "Newari Haku Patasi Gown",
         price: 380,
-        image: "/luxury-cashmere-sweater.png",
-        category: "tops",
+        image: "/product/cultural.jpg",
+        image_variant: ["/product/cultural.jpg"],
+        category: "cultural",
         description:
             "Ultimate luxury in a sweater. Our cashmere knit is made from 100% pure cashmere sourced from the finest herds. The subtle ribbed texture and thoughtful construction ensure this piece becomes your most treasured wardrobe staple.",
         rating: 5,
         sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-        colors: ["Cream", "Black", "Camel", "Burgundy", "Olive"],
+        colors: ["Black"],
     },
     4: {
         id: 4,
-        name: "Leather Midi Skirt",
+        name: "Baby Pasni Velvet Set",
         price: 450,
-        image: "/luxury-leather-skirt.jpg",
-        category: "bottoms",
+        image: "/product/baby1.jpg",
+        image_variant: ["/product/baby1.jpg"],
+        category: "baby",
         description:
             "Statement elegance with our buttery leather midi skirt. Crafted from the finest Italian leather, this piece features a high waist and A-line silhouette that flatters every shape. A-line skirt that transitions seamlessly from day to night.",
         rating: 4,
         sizes: ["XS", "S", "M", "L", "XL"],
-        colors: ["Black", "Chocolate", "Burgundy"],
+        colors: ["Red", "Brown"],
     },
     5: {
         id: 5,
         name: "Linen Summer Dress",
         price: 240,
         image: "/luxury-linen-dress.jpg",
-        category: "dresses",
+        image_variant: ["/luxury-linen-dress.jpg"],
+        category: "casual",
         description:
             "Breathable elegance for warm days. This linen summer dress is made from 100% European linen that softens with every wash. The relaxed fit and delicate straps provide comfort without sacrificing style.",
         rating: 5,
@@ -78,10 +83,11 @@ const products: Record<number, Product> = {
     },
     6: {
         id: 6,
-        name: "Structured Blazer",
+        name: "Light Blue Fendy Silk Embroidered Sari Family Set",
         price: 420,
-        image: "/luxury-structured-blazer.jpg",
-        category: "outerwear",
+        image: "/product/party2.jpg",
+        image_variant: ["/product/party2.jpg"],
+        category: "party",
         description:
             "Sharp tailoring defines this structured blazer. Single-breasted with notch lapels and subtle padding in the shoulders, it's designed for those who appreciate impeccable construction and timeless style. Perfect for work or evening wear.",
         rating: 5,
@@ -93,46 +99,49 @@ const products: Record<number, Product> = {
         name: "Satin Slip Dress",
         price: 310,
         image: "/luxury-satin-slip-dress.jpg",
-        category: "dresses",
+        image_variant: ["/luxury-satin-slip-dress.jpg"],
+        category: "casual",
+        description:
+            "Sharp tailoring defines this structured blazer. Single-breasted with notch lapels and subtle padding in the shoulders, it's designed for those who appreciate impeccable construction and timeless style. Perfect for work or evening wear.",
+        rating: 5,
+        sizes: ["XS", "S", "M", "L", "XL"],
+        colors: ["Black", "Navy", "Camel", "Charcoal"],
+    },
+    8: {
+        id: 8,
+        name: "Heavy Embroidered Lehenga",
+        price: 310,
+        image: "/product/party1.jpg",
+        image_variant: ["/product/party1.jpg"],
+        category: "party",
         description:
             "Understated luxury. This satin slip dress drapes beautifully with an elegant bias cut. Ideal for special occasions or layered with a blazer for everyday sophistication. The luxurious sheen of the satin ensures you'll turn heads.",
         rating: 4,
         sizes: ["XS", "S", "M", "L", "XL"],
         colors: ["Black", "Champagne", "Blush", "Midnight Blue"],
     },
-    8: {
-        id: 8,
-        name: "Premium Denim Jacket",
+    9: {
+        id: 9,
+        name: "Wide-Leg Linen Pants",
         price: 380,
-        image: "/luxury-denim-jacket.jpg",
-        category: "outerwear",
+        image: "/product/party.jpg",
+        image_variant: ["/product/party.jpg"],
+        category: "party",
         description:
             "Elevated basics. Our premium denim jacket is crafted from organic cotton and offers a perfect balance of structure and comfort. The clean lines and quality construction make it an essential layering piece.",
         rating: 5,
         sizes: ["XS", "S", "M", "L", "XL"],
         colors: ["Light Wash", "Medium Wash", "Dark Wash", "Black"],
-    },
-    9: {
-        id: 9,
-        name: "Wide-Leg Linen Pants",
-        price: 290,
-        image: "/luxury-wide-leg-linen-pants.jpg",
-        category: "bottoms",
-        description:
-            "Effortless ease meets sophisticated style. These wide-leg linen pants feature a high waist and flowing silhouette. Perfect for weekend getaways or relaxed office days, they pair beautifully with everything in your wardrobe.",
-        rating: 5,
-        sizes: ["XS", "S", "M", "L", "XL"],
-        colors: ["White", "Natural", "Khaki", "Navy"],
-    },
+    }
 }
 
-export default async function ProductDetail({ params }: { params: { id: string } }) {
-    const product = await products[Number.parseInt(params.id)] || products[1]
-
+export default async function ProductDetail({ params }: { params: Promise<{ id: string }> }) {
+    console.log(await params)
+    const product = await products[Number.parseInt((await params).id)]
+    console.log(product)
     return (
         <>
-            <Header />
-            <main className="bg-background">
+            <main className="bg-cyan-50">
                 {/* Product Details */}
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <div className="grid md:grid-cols-2 gap-12">
@@ -146,13 +155,13 @@ export default async function ProductDetail({ params }: { params: { id: string }
                                 />
                             </div>
                             <div className="grid grid-cols-4 gap-3">
-                                {[...Array(4)].map((_, i) => (
+                                {product.image_variant.map((image, i) => (
                                     <div
                                         key={i}
                                         className="bg-muted rounded-lg aspect-square overflow-hidden cursor-pointer hover:opacity-75 transition-opacity"
                                     >
                                         <img
-                                            src={product.image || "/placeholder.svg"}
+                                            src={image}
                                             alt={`View ${i + 1}`}
                                             className="w-full h-full object-cover"
                                         />

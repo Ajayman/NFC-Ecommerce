@@ -3,31 +3,31 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
-
+import Headers from "./components/headers";
+import Footer from "./components/footer"
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 const _playfair = Playfair_Display({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Luxe Atelier - Premium Fashion Boutique",
-  description: "Discover curated collections of premium fashion, timeless elegance, and exquisite design",
-  generator: "v0.app",
+  title: "Nina Fashion Collection - Premium Fashion Boutique",
+  description: "Curated collections for all occasions, timeless elegance, and exquisite design",
   icons: {
     icon: [
       {
-        url: "/icon-light-32x32.png",
+        url: "/Nina-logo-small.jpg",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/icon-dark-32x32.png",
+        url: "/Nina-logo-small.jpg",
         media: "(prefers-color-scheme: dark)",
       },
       {
-        url: "/icon.svg",
+        url: "/Nina-logo-small.jpg",
         type: "image/svg+xml",
       },
     ],
-    apple: "/apple-icon.png",
+    apple: "/Nina-logo-small.jpg",
   },
 }
 
@@ -39,7 +39,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
+        <Headers />
         {children}
+        <Footer />
         <Analytics />
       </body>
     </html>

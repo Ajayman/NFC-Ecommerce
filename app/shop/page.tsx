@@ -1,6 +1,5 @@
 "use client"
 
-import Header from "../components/headers"
 import { useState } from "react"
 import Link from "next/link"
 import { Filter, ChevronDown } from "lucide-react"
@@ -15,29 +14,35 @@ interface Product {
 }
 
 const products: Product[] = [
-    { id: 1, name: "Silk Oversized Shirt", price: 280, image: "/luxury-silk-shirt.jpg", category: "tops", rating: 5 },
+    {
+        id: 1, name: "Family Set Party Dress",
+        price: 280,
+        image: "/party-wear.jpeg",
+        category: "party",
+        rating: 5
+    },
     {
         id: 2,
-        name: "Tailored Wool Trousers",
+        name: "Tamang Cultural Bridal Lehenga",
         price: 320,
-        image: "/luxury-wool-trousers.jpg",
-        category: "bottoms",
+        image: "/tamang-cultural-dress.jpg",
+        category: "culural",
         rating: 5,
     },
     {
         id: 3,
-        name: "Cashmere Knit Sweater",
+        name: "Newari Haku Patasi Gown",
         price: 380,
-        image: "/luxury-cashmere-sweater.png",
-        category: "tops",
+        image: "/product/cultural.jpg",
+        category: "cultural",
         rating: 5,
     },
     {
         id: 4,
-        name: "Leather Midi Skirt",
+        name: "Baby Pasni Velvet Set",
         price: 450,
-        image: "/luxury-leather-skirt.jpg",
-        category: "bottoms",
+        image: "/product/baby1.jpg",
+        category: "baby",
         rating: 4,
     },
     {
@@ -45,42 +50,43 @@ const products: Product[] = [
         name: "Linen Summer Dress",
         price: 240,
         image: "/luxury-linen-dress.jpg",
-        category: "dresses",
+        category: "casual",
         rating: 5,
     },
     {
         id: 6,
-        name: "Structured Blazer",
+        name: "Light Blue Fendy Silk Embroidered Sari Family Set",
         price: 420,
-        image: "/luxury-structured-blazer.jpg",
-        category: "outerwear",
+        image: "/product/party2.jpg",
+        category: "party",
         rating: 5,
     },
-    { id: 7, name: "Satin Slip Dress", price: 310, image: "/luxury-satin-slip-dress.jpg", category: "dresses", rating: 4 },
+    { id: 7, name: "Satin Slip Dress", price: 310, image: "/luxury-satin-slip-dress.jpg", category: "casual", rating: 4 },
     {
         id: 8,
-        name: "Premium Denim Jacket",
+        name: "Heavy Embroidered Lehenga",
         price: 380,
-        image: "/luxury-denim-jacket.jpg",
-        category: "outerwear",
+        image: "/product/party1.jpg",
+        category: "party",
         rating: 5,
     },
     {
         id: 9,
-        name: "Wide-Leg Linen Pants",
+        name: "Pink Embroidered Bridal Lehenga",
         price: 290,
-        image: "/luxury-wide-leg-linen-pants.jpg",
-        category: "bottoms",
+        image: "/product/party.jpg",
+        category: "party",
         rating: 5,
     },
 ]
 
 const categories = [
     { id: "all", label: "All Products" },
-    { id: "tops", label: "Tops" },
-    { id: "bottoms", label: "Bottoms" },
-    { id: "dresses", label: "Dresses" },
-    { id: "outerwear", label: "Outerwear" },
+    { id: "cultural", label: "Cultural" },
+    { id: "party", label: "Party" },
+    { id: "bridal", label: "Bridal" },
+    { id: "casual", label: "Casual" },
+    { id: "baby", label: "Baby" }
 ]
 
 const sortOptions = [
@@ -106,8 +112,7 @@ export default function Shop() {
 
     return (
         <>
-            <Header />
-            <main className="bg-background">
+            <main className="bg-cyan-50">
                 {/* Page Header */}
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <h1 className="text-5xl font-bold text-primary mb-4">Our Collections</h1>
@@ -117,7 +122,7 @@ export default function Shop() {
                 </section>
 
                 {/* Filters and Sorting */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <div className="flex flex-col md:flex-row gap-6">
                         {/* Category Filters */}
                         <div className="md:w-48">
@@ -172,8 +177,8 @@ export default function Shop() {
                             {/* Products Grid */}
                             <div className="grid md:grid-cols-3 gap-8">
                                 {sortedProducts.map((product) => (
-                                    <Link key={product.id} href={`/shop/${product.id}`} className="group">
-                                        <div className="relative overflow-hidden rounded-lg mb-4 bg-muted aspect-[3/4]">
+                                    <Link key={product.id} href={`/shop/${product.id}`} className="group bg-background hover:bg-red-50 px-2 py-2 rounded-lg">
+                                        <div className="relative overflow-hidden rounded-lg mb-4 aspect-[3/4] ">
                                             <img
                                                 src={product.image || "/placeholder.svg"}
                                                 alt={product.name}
@@ -183,7 +188,7 @@ export default function Shop() {
                                                 ${product.price}
                                             </div>
                                         </div>
-                                        <h3 className="text-lg font-semibold text-primary mb-2 group-hover:text-accent transition-colors">
+                                        <h3 className="text-lg font-semibold text-primary mb-2">
                                             {product.name}
                                         </h3>
                                         <div className="flex items-center gap-1 mb-2">
