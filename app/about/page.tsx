@@ -1,4 +1,4 @@
-import Header from "../components/headers"
+import Header from "../../components/headers"
 import Link from "next/link"
 import { ArrowRight, Award, Globe, Heart } from "lucide-react"
 import { url } from "inspector"

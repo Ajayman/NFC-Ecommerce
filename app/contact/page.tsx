@@ -1,9 +1,8 @@
 "use client"
 
-import Header from "../components/headers"
 import { ArrowRight, Mail, MapPin, Phone } from "lucide-react"
 import { useState } from "react"
-import Link from "next/link"
+
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -14,7 +13,7 @@ export default function Contact() {
     })
     const [submitted, setSubmitted] = useState(false)
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setFormData((prev) => ({
             ...prev,
@@ -22,7 +21,7 @@ export default function Contact() {
         }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         // In a real app, you would send this to a backend
         console.log("Form submitted:", formData)
