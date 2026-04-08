@@ -1,50 +1,67 @@
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
+import prisma from "@/lib/prisma";
 
-export default function Home() {
-  const featuredCollections = [
+export default async function Home() {
+  const featuredCollections = await prisma.product.findMany(
     {
-      id: 1,
-      name: "Cultural Elegance",
-      description: "Timeless pieces for the modern woman",
-      image: "/tamang-cultural-dress.jpg",
-      href: "/shop",
-    },
-    {
-      id: 2,
-      name: "Heritage Collection",
-      description: "Crafted with tradition and innovation",
-      image: "/party-wear.jpeg",
-      href: "/shop",
-    },
-    {
-      id: 3,
-      name: "Babies Dresses",
-      description: "Less is more, perfectly refined",
-      image: "/babies-dress.jpg",
-      href: "/shop",
-    },
-  ]
-
+      where: {
+        productType: {
+          has: "Featured"
+        }
+      },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        description: true,
+        sizes: true,
+        colors: true,
+        rating: true,
+        productType: true,
+        category: true,
+        images: {
+          select: {
+            name: true,
+            url: true,
+          }
+        }
+      }
+    }
+  );
+  const homeData = await prisma.homeInfo.findFirst({
+    select: {
+      title: true,
+      titleDescription: true,
+      video: {
+        select: {
+          url: true
+        }
+      }
+    }
+  });
+  console.log(JSON.stringify(featuredCollections))
   return (
     <main className="bg-cyan-50">
       {/* Full Viewport Image */}
       <section className="relative w-full h-screen overflow-hidden">
-        <img
+        {/* <img
           src="/1.jpg"
           alt="Boutique Fashion Collection"
           className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20"></div>
+        /> */}
+        <video className="relative" width="100%" height="100%" autoPlay loop muted>
+          <source src={homeData?.video?.url} type="video/mp4" />
+        </video>
       </section>
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-b from-secondary/20 to-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-7xl font-bold text-primary mb-6 leading-tight text-balance">
-            Discover Fashion Excellence
+            {homeData?.title}
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Welcome to our boutique, offering curated styles, timeless elegance, premium quality, and unique designs that elevate your everyday fashion.
+            {homeData?.titleDescription}
           </p>
           <Link
             href="/shop"
@@ -65,15 +82,15 @@ export default function Home() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {featuredCollections.map((collection) => (
-            <Link key={collection.id} href={collection.href} className="group cursor-pointer">
+            <Link key={collection.id} href={`/shop/${collection.id}`} className="group cursor-pointer">
               <div className="relative overflow-hidden rounded-lg mb-4 bg-muted aspect-[4/6]">
                 <img
-                  src={collection.image || "/placeholder.svg"}
-                  alt={collection.name}
+                  src={collection.images[0]?.url || "/placeholder.svg"}
+                  alt={collection.images[0]?.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <h3 className="text-xl font-bold text-primary mb-2 group-hover:text-accent transition-colors">
+              <h3 className="text-xl font-bold text-primary mb-2 group-hover:text-red-900 transition-colors">
                 {collection.name}
               </h3>
               <p className="text-muted-foreground mb-3">{collection.description}</p>

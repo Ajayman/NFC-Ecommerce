@@ -3,9 +3,19 @@ import { useState } from "react";
 const sizes = ["XS", "S", "M", "L", "XL", "XXL"];
 const colors = ["Ivory", "Sage", "Charcoal", "Blush"];
 
-const VariantButton = (props: { colors?: string[], sizes?: string[] }) => {
+const VariantButton = (props: { colors?: string[], sizes?: string[], handleData: (value: string) => void }) => {
     const [selectedSize, setSelectedSize] = useState(sizes[0])
     const [selectedColor, setSelectedColor] = useState(colors[0])
+    function sendtoParent(buttonValue: string) {
+        if (props.sizes) {
+            setSelectedSize(buttonValue)
+            props.handleData(selectedSize);
+        }
+        if (props.colors) {
+            setSelectedColor(buttonValue)
+            props.handleData(selectedColor);
+        }
+    }
     if (props?.sizes) {
         return (
             <div className="mb-8">
@@ -15,7 +25,7 @@ const VariantButton = (props: { colors?: string[], sizes?: string[] }) => {
 
                         <button
                             key={size}
-                            onClick={() => setSelectedSize(size)}
+                            onClick={() => sendtoParent(size)}
                             className={`px-4 py-2 rounded-lg font-medium transition-all ${selectedSize === size
                                 ? "bg-primary text-primary-foreground"
                                 : "bg-muted hover:bg-muted/80 text-foreground"
@@ -36,7 +46,7 @@ const VariantButton = (props: { colors?: string[], sizes?: string[] }) => {
 
                         <button
                             key={color}
-                            onClick={() => setSelectedColor(color)}
+                            onClick={() => sendtoParent(color)}
                             className={`px-4 py-2 rounded-lg font-medium transition-all ${selectedColor === color
                                 ? "bg-primary text-primary-foreground"
                                 : "bg-muted hover:bg-muted/80 text-foreground"
