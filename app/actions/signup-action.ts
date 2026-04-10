@@ -16,7 +16,7 @@ export async function submitSignupAction(_prevState: adminSignupState, formData:
         } as adminSignupState
     }
 
-    const response = await fetch("http://localhost:3000/api/register", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

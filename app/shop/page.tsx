@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import ShopUI from './shopUI'
 
 async function Shop() {
-    const res = await fetch("http://localhost:3000/api/product", { method: "GET" });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`, { method: "GET" });
     const products = await res.json();
     return products;
 }

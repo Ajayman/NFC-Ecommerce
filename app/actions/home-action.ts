@@ -14,7 +14,7 @@ async function submitToApi(
     method: "POST" | "PATCH",
     body: Record<string, unknown>
 ): Promise<boolean> {
-    const response = await fetch("http://localhost:3000/api/home", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/home`, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

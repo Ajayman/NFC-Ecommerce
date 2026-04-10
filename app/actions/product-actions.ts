@@ -114,7 +114,7 @@ export async function SubmitProductAction(_prevState: productState, formData: Fo
     //         streamifier.createReadStream(buffer).pipe(stream);
     //     }
     // })
-    const response = await fetch("http://localhost:3000/api/product", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -185,7 +185,7 @@ export async function GetEditProductAction(id: string, _prevState: productState,
             errors: result.error.flatten().fieldErrors
         } as productState
     }
-    const response = await fetch("http://localhost:3000/api/product", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json"
