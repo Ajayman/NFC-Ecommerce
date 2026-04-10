@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { Prisma } from "@/generated/prisma/client";
 export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, description, productType, price, images, sizes, colors, category, rating } = body;
@@ -25,8 +24,8 @@ export async function POST(request: NextRequest) {
         })
         return NextResponse.json({ message: "Product created successfully", product, success: true }, { status: 201 });
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            return NextResponse.json({ message: e.message }, { status: 500 });
+        if (e) {
+            return NextResponse.json({ message: e }, { status: 500 });
         }
         throw e;
     }
@@ -60,8 +59,8 @@ export async function PATCH(request: NextRequest) {
         })
         return NextResponse.json({ message: "Product updated successfully", product, success: true }, { status: 201 });
     } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            return NextResponse.json({ message: e.message }, { status: 500 });
+        if (e) {
+            return NextResponse.json({ message: e }, { status: 500 });
         }
         throw e;
     }

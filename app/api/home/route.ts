@@ -1,10 +1,10 @@
-import { Prisma } from "@/generated/prisma/client";
+
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 function handlePrismaError(e: unknown): NextResponse {
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-        return NextResponse.json({ message: e.message }, { status: 500 });
+    if (e) {
+        return NextResponse.json({ message: e }, { status: 500 });
     }
     throw e;
 }
