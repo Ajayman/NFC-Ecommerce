@@ -1,19 +1,24 @@
 export const dynamic = 'force-dynamic';
 import { Suspense } from "react";
 import HomePage from "./homeUI";
+import prisma from "@/lib/prisma";
 
 async function getHomeData() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/home`, { method: "GET" });
-    if (!res.ok) throw new Error(`API error: ${res.status}`);
-    return res.json();
-
+    return await prisma.homeInfo.findFirst({
+        select: {
+            id: true,
+            title: true,
+            titleDescription: true,
+            video: { select: { id: true, url: true } }
+        }
+    });
 }
 
 export default async function Home() {
     const homeData = await getHomeData();
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <HomePage homeData={homeData} />
+            <HomePage homeInfo={homeData} />
         </Suspense>
     )
 }
