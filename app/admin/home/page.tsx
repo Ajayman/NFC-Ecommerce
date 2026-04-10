@@ -4,16 +4,9 @@ import HomePage from "./homeUI";
 
 async function getHomeData() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/home`, { method: "GET" });
-    if (!res.ok) {
-        throw new Error(`API error: ${res.status}`);
-    }
+    if (!res.ok) throw new Error(`API error: ${res.status}`);
+    return res.json();
 
-    const contentType = res.headers.get('content-type');
-    if (!contentType?.includes('application/json')) {
-        throw new Error(`Expected JSON but got: ${contentType}`);
-    }
-    const homeData = await res.json();
-    return homeData;
 }
 
 export default async function Home() {
