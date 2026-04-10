@@ -15,7 +15,7 @@ import { useActionState } from "react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const BuyNowButton = ({ handleData }: { handleData: (value: {}) => void }) => {
+const BuyNowButton = ({ handleData }: { handleData: { productId: string, name: string, selectedSize: string, selectedColor: string, quantity: number } }) => {
     console.log(handleData);
     const [formState, formAction, pending] = useActionState<buyNowState, FormData>(SubmitBuyAction.bind(null, handleData),
         {

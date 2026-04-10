@@ -6,11 +6,16 @@ import { Filter, ChevronDown } from "lucide-react"
 import { use } from "react";
 
 type Product = {
+    id: string | number | bigint | null | undefined;
     products: any;
     name: string,
     description: string,
     productType: string[],
-    image: {}[],
+    images: [{
+        url: string,
+        name: string,
+        resource_type: string
+    }],
     sizes: string[],
     colors: string[],
     category: string[],
@@ -36,11 +41,10 @@ const sortOptions = [
 
 export default function Shop({ allProducts }: { allProducts: Promise<Product[]> }) {
     const products = use(allProducts);
-    console.log("All Products:", products.products[0].images);
     const [selectedCategory, setSelectedCategory] = useState("all")
     const [selectedSort, setSelectedSort] = useState("featured")
     const [showFilters, setShowFilters] = useState(false)
-    const filteredProducts = selectedCategory === "all" ? products.products : products.products.filter((p) => p.category.some((c) => c.toLowerCase().includes(selectedCategory.toLowerCase())))
+    const filteredProducts = selectedCategory === "all" ? products : products.filter((p) => p.category.some((c) => c.toLowerCase().includes(selectedCategory.toLowerCase())))
     const sortedProducts = [...filteredProducts].sort((a, b) => {
         if (selectedSort === "price-low") return a.price - b.price
         if (selectedSort === "price-high") return b.price - a.price

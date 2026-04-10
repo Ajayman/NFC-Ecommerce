@@ -1,6 +1,6 @@
 "use client";
 
-import { GetEditProductAction, SubmitProductAction } from "@/app/actions/product-actions";
+import { EditProductAction, GetEditProductAction, SubmitProductAction } from "@/app/actions/product-actions";
 import { productState } from "@/app/schema";
 import Form from "next/form";
 import { Button } from "@/components/ui/button";
@@ -54,7 +54,7 @@ export function ProductDialogUI({ option }: { option: String }) {
                 name: "",
                 description: "",
                 productType: [],
-                image: {} as File[],
+                image: [{ name: "", url: "", resource_type: "" }],
                 sizes: [],
                 colors: [],
                 category: [],
@@ -62,15 +62,15 @@ export function ProductDialogUI({ option }: { option: String }) {
                 price: 0
             },
             errors: null,
-            updateSuccess: false
+            success: false
         })
     useEffect(() => {
-        if (formState?.updateSuccess) {
+        if (formState?.success) {
             toast("Your product has been updated successfully!")
             setEditOpen(false);
             router.refresh();
         }
-    }, [formState?.updateSuccess])
+    }, [formState?.success])
     const urlArray: string[] | null = []
     useEffect(() => {
         if (imageFile) {
@@ -93,7 +93,7 @@ export function ProductDialogUI({ option }: { option: String }) {
         }
     }
     const handleEdit = async (id: string) => {
-        const response = await GetEditProductAction(id);
+        const response = await EditProductAction(id);
         if (response.success && response.product) {
             formState.values = {
                 name: response.product.name,

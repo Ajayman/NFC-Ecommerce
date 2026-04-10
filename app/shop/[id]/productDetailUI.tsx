@@ -10,13 +10,17 @@ type Product = {
     id: number,
     name: string,
     price: number,
-    image: string,
-    image_variant: string[],
+    images: [{
+        url: string,
+        name: string,
+        resource_type: string
+    }],
     category: string,
     description: string,
     rating: number,
     sizes: string[],
-    colors: string[]
+    colors: string[],
+    productType: string[],
 }
 
 
@@ -33,7 +37,7 @@ export default function ProductDetail({ product }: { product: Promise<Product> }
         quantity: Number("")
     });
     const productDetail = use(product);
-
+    console.log("Product Detail:", productDetail);
     function handleBuyForm(formData: FormData) {
         const values = {
             productId: formData.get("productId") as string,

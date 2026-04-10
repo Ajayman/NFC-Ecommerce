@@ -34,7 +34,13 @@ type HomeData = z.infer<typeof homeSchema> & {
 };
 
 const INITIAL_FORM_STATE: homeInfoState = {
-    values: { video: {}, title: '', titleDescription: '' },
+    values: {
+        video: {
+            name: '',
+            url: '',
+            resource_type: ''
+        }, title: '', titleDescription: ''
+    },
     errors: null,
     success: false,
 };
@@ -104,185 +110,182 @@ const HomePage = ({ homeData }: { homeData: Promise<HomeData> }) => {
         SubmitHomeAction,
         INITIAL_FORM_STATE
     );
-    const [formEditState, editFormAction, editPending] = useActionState<homeInfoState, FormData>(
-        async (_prevState: homeInfoState, formData: FormData) => {
-            const result = await SubmitEditHomeAction(homeInfo.id, formData);
-            return result as homeInfoState;
-        },
+    const [formEditState, editFormAction, editPending] = useActionState(
+        SubmitEditHomeAction.bind(null, homeInfo.id),
         INITIAL_FORM_STATE
     );
 
-    const [editOpen, setEditOpen] = useState(false);
-    const [createVideo, setCreateVideo] = useState<VideoUpload | undefined>();
-    const [editVideo, setEditVideo] = useState<VideoUpload | undefined>();
-    const [uploadError, setUploadError] = useState<string | undefined>();
+const [editOpen, setEditOpen] = useState(false);
+const [createVideo, setCreateVideo] = useState<VideoUpload | undefined>();
+const [editVideo, setEditVideo] = useState<VideoUpload | undefined>();
+const [uploadError, setUploadError] = useState<string | undefined>();
 
-    function parseUploadResult(result: unknown): VideoUpload {
-        const { public_id: name, secure_url: url, resource_type } = (result as { info: Record<string, string> }).info;
-        return { name, url, resource_type: resource_type as VideoUpload['resource_type'] };
+function parseUploadResult(result: unknown): VideoUpload {
+    const { public_id: name, secure_url: url, resource_type } = (result as { info: Record<string, string> }).info;
+    return { name, url, resource_type: resource_type as VideoUpload['resource_type'] };
+}
+
+function handleUpload(result: unknown) {
+    setCreateVideo(parseUploadResult(result));
+    setUploadError(undefined);
+}
+
+function handleEditUpload(result: unknown) {
+    setEditVideo(parseUploadResult(result));
+    setUploadError(undefined);
+}
+
+function handleUploadError(error: unknown) {
+    setUploadError((error as { statusText: string }).statusText);
+}
+
+useEffect(() => {
+    if (formState.success) {
+        toast("Home Page Created Successfully");
+        router.refresh();
     }
+}, [formState.success, router]);
 
-    function handleUpload(result: unknown) {
-        setCreateVideo(parseUploadResult(result));
-        setUploadError(undefined);
+useEffect(() => {
+    if (formEditState.success) {
+        toast("Home Page Updated Successfully");
+        setEditOpen(false);
+        router.refresh();
     }
+}, [formEditState.success, router]);
 
-    function handleEditUpload(result: unknown) {
-        setEditVideo(parseUploadResult(result));
-        setUploadError(undefined);
-    }
-
-    function handleUploadError(error: unknown) {
-        setUploadError((error as { statusText: string }).statusText);
-    }
-
-    useEffect(() => {
-        if (formState.success) {
-            toast("Home Page Created Successfully");
-            router.refresh();
-        }
-    }, [formState.success, router]);
-
-    useEffect(() => {
-        if (formEditState.success) {
-            toast("Home Page Updated Successfully");
-            setEditOpen(false);
-            router.refresh();
-        }
-    }, [formEditState.success, router]);
-
-    return (
-        <div className='flex bg-background min-h-screen'>
-            <AdminSidebar />
-            <main className="flex-1 p-8">
-                <div className="max-w-6xl">
-                    <div className="mb-4">
-                        <h1 className="text-4xl font-bold text-primary mb-2">Home</h1>
-                        <button
-                            className="p-2 hover:bg-blue-100 rounded text-blue-600 transition-colors"
-                            title="Edit"
-                            onClick={() => setEditOpen(true)}
-                        >
-                            <Edit2 size={20} />
-                        </button>
-                        <p className="text-muted-foreground">Manage Your Home Page</p>
-                    </div>
-
-                    <FormErrors errors={formState.errors} />
-
-                    <Card>
-                        <CardContent>
-                            <Form action={formAction}>
-                                <FieldGroup>
-                                    <VideoUploadField
-                                        video={createVideo}
-                                        onSuccess={handleUpload}
-                                        onError={handleUploadError}
-                                        uploadError={uploadError}
-                                    />
-                                    <Field>
-                                        <FieldLabel htmlFor="id_title">Home Main Title</FieldLabel>
-                                        <Input
-                                            id="id_title"
-                                            name="title"
-                                            disabled={pending}
-                                            placeholder="Home Main Title"
-                                            autoComplete="off"
-                                        />
-                                        {formState.errors?.title && (
-                                            <span className="text-red-600 text-sm">{formState.errors.title}</span>
-                                        )}
-                                    </Field>
-                                    <Field>
-                                        <FieldLabel htmlFor="id_titleDescription">Title Description</FieldLabel>
-                                        <InputGroupTextarea
-                                            id="id_titleDescription"
-                                            name="titleDescription"
-                                            disabled={pending}
-                                            defaultValue={formState.values?.titleDescription}
-                                            placeholder="Title Description"
-                                            autoComplete="off"
-                                            className="border min-h-[150px]"
-                                        />
-                                        {formState.errors?.titleDescription && (
-                                            <span className="text-red-600 text-sm">{formState.errors.titleDescription}</span>
-                                        )}
-                                    </Field>
-                                </FieldGroup>
-                                <CardFooter>
-                                    <Button type="submit" className="mt-4" disabled={pending}>
-                                        {pending ? 'Saving...' : 'Save'}
-                                    </Button>
-                                </CardFooter>
-                            </Form>
-                        </CardContent>
-                    </Card>
-
-                    <Dialog open={editOpen} onOpenChange={setEditOpen} modal={false}>
-                        <DialogContent
-                            onInteractOutside={(e) => e.preventDefault()}
-                            className="sm:max-w-[825px]"
-                        >
-                            <Form action={editFormAction}>
-                                <DialogHeader>
-                                    <DialogTitle>Fill Form To Update Home</DialogTitle>
-                                </DialogHeader>
-                                <Card className="h-[400px] overflow-y-scroll">
-                                    <CardContent>
-                                        <FieldGroup>
-                                            <VideoUploadField
-                                                video={editVideo}
-                                                onSuccess={handleEditUpload}
-                                                onError={handleUploadError}
-                                                uploadError={uploadError}
-                                            />
-                                            <Field>
-                                                <FieldLabel htmlFor="edit_title">Home Main Title</FieldLabel>
-                                                <Input
-                                                    id="edit_title"
-                                                    name="title"
-                                                    disabled={editPending}
-                                                    placeholder="Home Main Title"
-                                                    autoComplete="off"
-                                                    defaultValue={homeInfo?.title}
-                                                />
-                                                {formEditState.errors?.title && (
-                                                    <span className="text-red-600 text-sm">{formEditState.errors.title}</span>
-                                                )}
-                                            </Field>
-                                            <Field>
-                                                <FieldLabel htmlFor="edit_titleDescription">Title Description</FieldLabel>
-                                                <InputGroupTextarea
-                                                    id="edit_titleDescription"
-                                                    name="titleDescription"
-                                                    disabled={editPending}
-                                                    defaultValue={homeInfo?.titleDescription}
-                                                    placeholder="Title Description"
-                                                    autoComplete="off"
-                                                    className="border min-h-[150px]"
-                                                />
-                                                {formEditState.errors?.titleDescription && (
-                                                    <span className="text-red-600 text-sm">{formEditState.errors.titleDescription}</span>
-                                                )}
-                                            </Field>
-                                        </FieldGroup>
-                                    </CardContent>
-                                </Card>
-                                <DialogFooter className="mt-4">
-                                    <DialogClose asChild>
-                                        <Button variant="outline">Cancel</Button>
-                                    </DialogClose>
-                                    <Button type="submit" disabled={editPending}>
-                                        {editPending ? 'Submitting...' : 'Update Home'}
-                                    </Button>
-                                </DialogFooter>
-                            </Form>
-                        </DialogContent>
-                    </Dialog>
+return (
+    <div className='flex bg-background min-h-screen'>
+        <AdminSidebar />
+        <main className="flex-1 p-8">
+            <div className="max-w-6xl">
+                <div className="mb-4">
+                    <h1 className="text-4xl font-bold text-primary mb-2">Home</h1>
+                    <button
+                        className="p-2 hover:bg-blue-100 rounded text-blue-600 transition-colors"
+                        title="Edit"
+                        onClick={() => setEditOpen(true)}
+                    >
+                        <Edit2 size={20} />
+                    </button>
+                    <p className="text-muted-foreground">Manage Your Home Page</p>
                 </div>
-            </main>
-        </div>
-    );
+
+                <FormErrors errors={formState.errors} />
+
+                <Card>
+                    <CardContent>
+                        <Form action={formAction}>
+                            <FieldGroup>
+                                <VideoUploadField
+                                    video={createVideo}
+                                    onSuccess={handleUpload}
+                                    onError={handleUploadError}
+                                    uploadError={uploadError}
+                                />
+                                <Field>
+                                    <FieldLabel htmlFor="id_title">Home Main Title</FieldLabel>
+                                    <Input
+                                        id="id_title"
+                                        name="title"
+                                        disabled={pending}
+                                        placeholder="Home Main Title"
+                                        autoComplete="off"
+                                    />
+                                    {formState.errors?.title && (
+                                        <span className="text-red-600 text-sm">{formState.errors.title}</span>
+                                    )}
+                                </Field>
+                                <Field>
+                                    <FieldLabel htmlFor="id_titleDescription">Title Description</FieldLabel>
+                                    <InputGroupTextarea
+                                        id="id_titleDescription"
+                                        name="titleDescription"
+                                        disabled={pending}
+                                        defaultValue={formState.values?.titleDescription}
+                                        placeholder="Title Description"
+                                        autoComplete="off"
+                                        className="border min-h-[150px]"
+                                    />
+                                    {formState.errors?.titleDescription && (
+                                        <span className="text-red-600 text-sm">{formState.errors.titleDescription}</span>
+                                    )}
+                                </Field>
+                            </FieldGroup>
+                            <CardFooter>
+                                <Button type="submit" className="mt-4" disabled={pending}>
+                                    {pending ? 'Saving...' : 'Save'}
+                                </Button>
+                            </CardFooter>
+                        </Form>
+                    </CardContent>
+                </Card>
+
+                <Dialog open={editOpen} onOpenChange={setEditOpen} modal={false}>
+                    <DialogContent
+                        onInteractOutside={(e) => e.preventDefault()}
+                        className="sm:max-w-[825px]"
+                    >
+                        <Form action={editFormAction}>
+                            <DialogHeader>
+                                <DialogTitle>Fill Form To Update Home</DialogTitle>
+                            </DialogHeader>
+                            <Card className="h-[400px] overflow-y-scroll">
+                                <CardContent>
+                                    <FieldGroup>
+                                        <VideoUploadField
+                                            video={editVideo}
+                                            onSuccess={handleEditUpload}
+                                            onError={handleUploadError}
+                                            uploadError={uploadError}
+                                        />
+                                        <Field>
+                                            <FieldLabel htmlFor="edit_title">Home Main Title</FieldLabel>
+                                            <Input
+                                                id="edit_title"
+                                                name="title"
+                                                disabled={editPending}
+                                                placeholder="Home Main Title"
+                                                autoComplete="off"
+                                                defaultValue={homeInfo?.title}
+                                            />
+                                            {formEditState.errors?.title && (
+                                                <span className="text-red-600 text-sm">{formEditState.errors.title}</span>
+                                            )}
+                                        </Field>
+                                        <Field>
+                                            <FieldLabel htmlFor="edit_titleDescription">Title Description</FieldLabel>
+                                            <InputGroupTextarea
+                                                id="edit_titleDescription"
+                                                name="titleDescription"
+                                                disabled={editPending}
+                                                defaultValue={homeInfo?.titleDescription}
+                                                placeholder="Title Description"
+                                                autoComplete="off"
+                                                className="border min-h-[150px]"
+                                            />
+                                            {formEditState.errors?.titleDescription && (
+                                                <span className="text-red-600 text-sm">{formEditState.errors.titleDescription}</span>
+                                            )}
+                                        </Field>
+                                    </FieldGroup>
+                                </CardContent>
+                            </Card>
+                            <DialogFooter className="mt-4">
+                                <DialogClose asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </DialogClose>
+                                <Button type="submit" disabled={editPending}>
+                                    {editPending ? 'Submitting...' : 'Update Home'}
+                                </Button>
+                            </DialogFooter>
+                        </Form>
+                    </DialogContent>
+                </Dialog>
+            </div>
+        </main>
+    </div>
+);
 };
 
 export default HomePage;

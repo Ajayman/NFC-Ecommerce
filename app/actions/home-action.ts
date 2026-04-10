@@ -2,13 +2,6 @@
 "use server"
 
 import { homeInfoState, homeSchema } from "../schema"
-
-type HomeActionResult = {
-    values: Record<string, unknown>;
-    success: boolean;
-    errors: Record<string, string[]> | null;
-}
-
 function extractHomeValues(formData: FormData) {
     return {
         video: JSON.parse(formData.get("video") as string),
@@ -31,26 +24,19 @@ async function submitToApi(
     return res.success
 }
 
-async function handleHomeAction(
-    formData: FormData,
-    method: "POST" | "PATCH",
-    extraBody: Record<string, unknown> = {}
-): Promise<HomeActionResult> {
+async function handleHomeAction(formData: FormData, method: "POST" | "PATCH", extraBody: Record<string, unknown> = {}) {
     const values = extractHomeValues(formData)
 
     const result = homeSchema.safeParse(values);
     if (!result.success) {
-        return { values, success: false, errors: result.error.flatten().fieldErrors }
+        return { values, success: false, errors: result.error.flatten().fieldErrors } as homeInfoState
     }
 
     const success = await submitToApi(method, { ...values, ...extraBody })
-    return { values, success, errors: null }
+    return { values, success, errors: null } as homeInfoState
 }
 
-export async function SubmitHomeAction(
-    _prevState: homeInfoState,
-    formData: FormData
-): Promise<HomeActionResult> {
+export async function SubmitHomeAction(_prevState: homeInfoState, formData: FormData) {
     return handleHomeAction(formData, "POST")
 }
 
@@ -58,7 +44,7 @@ export async function SubmitEditHomeAction(
     id: string,
     _prevState: homeInfoState,
     formData: FormData
-): Promise<HomeActionResult> {
+) {
     return handleHomeAction(formData, "PATCH", { id })
 }
 

@@ -81,7 +81,7 @@ export async function GET(request: NextRequest) {
             }
         }
         );
-        return NextResponse.json({ products }, { status: 200 });
+        return NextResponse.json(products, { status: 200 });
     } catch (e) {
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
     }

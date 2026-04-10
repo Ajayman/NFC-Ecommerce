@@ -55,7 +55,7 @@ export async function SubmitBuyAction(data: any, _prevState: any, formData: Form
             values,
             success: false,
             errors: { general: ["Something went wrong"] }
-        }
+        } as buyNowState
     } catch (e) {
         return {
             values,

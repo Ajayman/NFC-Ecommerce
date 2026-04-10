@@ -20,12 +20,18 @@ import { Select, SelectTrigger, SelectValue, SelectGroup, SelectItem, SelectCont
 import { use } from "react";
 import { useRouter } from "next/navigation";
 import { CldUploadButton, CldImage, CldVideoPlayer } from 'next-cloudinary'
+type ImageUpload = {
+  name: string;
+  url: string;
+  resource_type: 'image' | 'video';
+};
+
 type Product = {
   products: any;
   name: string,
   description: string,
   productType: string[],
-  image: {}[],
+  image: ImageUpload[],
   sizes: string[],
   colors: string[],
   category: string[],
@@ -38,6 +44,7 @@ const colors = ["Ivory", "Sage", "Charcoal", "Blush"] as const
 const categories = ["Party", "Cultural", "Baby", "Casual", "Formal"] as const
 const productType = ["Featured", "Trending", "New"] as const
 export default function AdminProducts({ products }: { products: Promise<Product> }) {
+  const allProducts = use(products);
   const [formState, formAction, pending] = useActionState<productState, FormData>(SubmitProductAction,
     {
       values: {
@@ -70,30 +77,30 @@ export default function AdminProducts({ products }: { products: Promise<Product>
     success: false
   })
   const router = useRouter();
-  const [images, setImages] = useState<{}[]>([]);
-  const [editedImages, setEditedImages] = useState<{}[]>([]);
-  const [info, setInfo] = useState();
-  const [error, setError] = useState();
-  function handleUpload(result) {
+  const [images, setImages] = useState<ImageUpload[]>([]);
+  const [editedImages, setEditedImages] = useState<ImageUpload[]>([]);
+  const [info, setInfo] = useState({ message: "" });
+  const [error, setError] = useState({ message: "" });
+  function handleUpload(result: any) {
     const { public_id: name, secure_url: url, resource_type: resource_type } = result.info;
     setImages((prev) => [...prev, { name, url, resource_type }]);
-    setError(null);
+    setError({ message: "" });
   }
-  function handleEditUpload(result) {
+  function handleEditUpload(result: any) {
     const { public_id: name, secure_url: url, resource_type: resource_type } = result.info;
     if (formState.values) {
       formState.values.image = [];
     }
     setEditedImages((prev) => [...prev, { name, url, resource_type }]);
-    setError(null);
+    setError({ message: "" });
   }
 
 
-  function handleError(error, _widget) {
-    setInfo(null);
+  function handleError(error: any) {
+    setInfo({ message: "" });
     setError(error);
   }
-  const allProducts = use(products);
+
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const handleEdit = async (id: string) => {
@@ -241,7 +248,7 @@ export default function AdminProducts({ products }: { products: Promise<Product>
                             <CloudUpload className="mr-2" />
                             Upload
                           </CldUploadButton>
-                          {error && <p className="mt-2 text-xs text-red-600">{error.statusText}</p>}
+                          {error && <p className="mt-2 text-xs text-red-600">{error.message}</p>}
 
                           {images.length > 0 && (
                             <div className="flex">
@@ -267,8 +274,8 @@ export default function AdminProducts({ products }: { products: Promise<Product>
                                       )}
                                       {url.resource_type === 'video' && (
                                         <CldVideoPlayer
-                                          width={url.width}
-                                          height={url.height}
+                                          width="200"
+                                          height="200"
                                           src={url.url}
                                         />
                                       )}
@@ -540,8 +547,8 @@ export default function AdminProducts({ products }: { products: Promise<Product>
                                     )}
                                     {url.resource_type === 'video' && (
                                       <CldVideoPlayer
-                                        width={url.width}
-                                        height={url.height}
+                                        width="200"
+                                        height="200"
                                         src={url.url}
                                       />
                                     )}
@@ -575,8 +582,8 @@ export default function AdminProducts({ products }: { products: Promise<Product>
                                     )}
                                     {url.resource_type === 'video' && (
                                       <CldVideoPlayer
-                                        width={url.width}
-                                        height={url.height}
+                                        width="200"
+                                        height="200"
                                         src={url.url}
                                       />
                                     )}
@@ -602,7 +609,7 @@ export default function AdminProducts({ products }: { products: Promise<Product>
                         <Field>
                           <Input name="image" value={JSON.stringify(editedImages)} readOnly hidden />
                         </Field>
-                        {error && <p className="mt-2 text-xs text-red-600">{error.statusText}</p>}
+                        {error && <p className="mt-2 text-xs text-red-600">{error.message}</p>}
                         <div className="grid grid-cols-2 gap-4">
                           <Field>
                             <FieldLabel htmlFor="id_price">Price</FieldLabel>

@@ -26,7 +26,7 @@ export async function TeamMemberAddAction(id: string, _prevState: aboutTeamMembe
             values,
             success: false,
             errors: result.error.flatten().fieldErrors
-        }
+        } as aboutTeamMemberState
     }
     if (values.image instanceof File) {
         const arrayBuffer = await values.image.arrayBuffer();
@@ -46,7 +46,7 @@ export async function TeamMemberAddAction(id: string, _prevState: aboutTeamMembe
                 await prisma.aboutTeamMember.create({
                     data: {
                         name: result.data.name,
-                        image: await image_file,
+                        // imageUrl: image_file.url,
                         role: result.data.role,
                         bio: result.data.bio,
                         aboutId: id
@@ -56,16 +56,13 @@ export async function TeamMemberAddAction(id: string, _prevState: aboutTeamMembe
                     values,
                     success: true,
                     errors: null
-                }
+                } as aboutTeamMemberState
             } catch (e) {
                 return {
-                    values: {
-                        name: "",
-                        role: ""
-                    },
+                    values,
                     success: false,
                     errors: "Something went wrong"
-                }
+                } as aboutTeamMemberState
             }
         })
         streamifier.createReadStream(buffer).pipe(stream);
