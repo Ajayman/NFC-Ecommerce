@@ -9,7 +9,7 @@ const menuItems = [
   { href: '/admin/home', label: 'Home Page', icon: House },
   { href: '/admin/products', label: 'Products', icon: Package },
   // { href: '/admin/about', label: 'About Page', icon: Users },
-  { href: '/admin/contact', label: 'Contact Page', icon: Mail },
+  // { href: '/admin/contact', label: 'Contact Page', icon: Mail },
 ];
 
 export function AdminSidebar() {

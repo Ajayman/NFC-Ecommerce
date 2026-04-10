@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { Edit2 } from 'lucide-react';
 
 type ContactData = {
+    id: string;
     title: string;
     subTitle: string;
     phone: string;
@@ -30,9 +31,10 @@ type ContactData = {
     locationSubText: string;
 }
 
-export default function AdminContact({ contactData }: { contactData: Promise<any> }) {
+export default function AdminContact({ contactInfo }: { contactInfo: ContactData }) {
     const [open, setOpen] = useState(false);
-    const getContactData = use(contactData);
+    const getContactData = [contactInfo];
+    console.log("contact detail", getContactData);
     const router = useRouter();
     const [formContactState, ContactAddAction, isPending] = useActionState<contactInfoState, FormData>(SubmitContactAction, {
         values: {
