@@ -16,8 +16,8 @@ async function getHomeData() {
     return homeData;
 }
 
-export default function Home() {
-    const homeData = getHomeData();
+export default async function Home() {
+    const homeData = await getHomeData();
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <HomePage homeData={homeData} />
