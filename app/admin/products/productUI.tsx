@@ -17,7 +17,6 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectGroup, SelectItem, SelectContent, SelectLabel } from "@/components/ui/select";
-import { use } from "react";
 import { useRouter } from "next/navigation";
 import { CldUploadButton, CldImage, CldVideoPlayer } from 'next-cloudinary'
 type ImageUpload = {
@@ -27,11 +26,10 @@ type ImageUpload = {
 };
 
 type Product = {
-  products: any;
+  id: string;
   name: string,
   description: string,
   productType: string[],
-  image: ImageUpload[],
   sizes: string[],
   colors: string[],
   category: string[],
@@ -43,8 +41,7 @@ const sizes = ["XS", "S", "M", "L", "XL", "XXL"] as const
 const colors = ["Ivory", "Sage", "Charcoal", "Blush"] as const
 const categories = ["Party", "Cultural", "Baby", "Casual", "Formal"] as const
 const productType = ["Featured", "Trending", "New"] as const
-export default function AdminProducts({ products }: { products: Promise<Product> }) {
-  const allProducts = use(products);
+export default function AdminProducts({ products }: { products: Product[] }) {
   const [formState, formAction, pending] = useActionState<productState, FormData>(SubmitProductAction,
     {
       values: {
@@ -788,7 +785,7 @@ export default function AdminProducts({ products }: { products: Promise<Product>
                 </tr>
               </thead>
               <tbody>
-                {allProducts.products.map((product: any) => (
+                {products.map((product: any) => (
                   <tr key={product.id} className="border-b border-border hover:bg-primary/5 transition-colors">
                     <td className="px-6 py-4 font-medium">{product.name}</td>
                     <td className="px-6 py-4 capitalize text-muted-foreground">{product.price}</td>

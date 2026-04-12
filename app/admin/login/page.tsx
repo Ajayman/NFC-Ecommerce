@@ -37,9 +37,9 @@ export default function AdminLogin() {
                                 Enter username and password to access the admin panel
                             </CardDescription>
                             <CardAction>
-                                <Link href="/admin/signup" className="text-primary hover:underline">
+                                {/* <Link href="/admin/signup" className="text-primary hover:underline">
                                     Sign up
-                                </Link>
+                                </Link> */}
                             </CardAction>
                         </CardHeader>
                         <CardContent>

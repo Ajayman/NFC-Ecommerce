@@ -2,10 +2,13 @@ export const dynamic = "force-dynamic";
 import { Suspense } from "react";
 import AdminProducts from "./productUI";
 import { notFound } from "next/navigation";
+import prisma from "@/lib/prisma";
 
 async function getProducts() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`, { method: "GET" });
-    const products = await res.json();
+    const products = await prisma.product.findMany();
+    if (!products)
+        return notFound();
+
     if (!products) return notFound();
     return products;
 }
@@ -15,9 +18,8 @@ async function deleteProducts() {
     return products;
 }
 
-export default function productService() {
-    const products = getProducts();
-    console.log(products);
+export default async function productService() {
+    const products = await getProducts();
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <AdminProducts products={products} />
