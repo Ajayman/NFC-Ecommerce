@@ -10,11 +10,11 @@ type Product = {
     name: string,
     description: string,
     productType: string[],
-    images: [{
+    images: {
         url: string,
         name: string,
         resource_type: string
-    }],
+    }[],
     sizes: string[],
     colors: string[],
     category: string[],
