@@ -1,10 +1,12 @@
 export const dynamic = "force-dynamic";
 import { Suspense } from "react";
 import AdminProducts from "./productUI";
+import { notFound } from "next/navigation";
 
 async function getProducts() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`, { method: "GET" });
     const products = await res.json();
+    if (!products) return notFound();
     return products;
 }
 async function deleteProducts() {
