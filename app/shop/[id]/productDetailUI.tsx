@@ -24,7 +24,7 @@ type Product = {
 }
 
 
-export default function ProductDetail({ product }: { product: Promise<Product> }) {
+export default function ProductDetail({ product }: { product: Product }) {
     const [selectedSize, setSelectedSize] = useState("");
     const [selectedColor, setSelectedColor] = useState("");
     const [imageShow, setImageShow] = useState(0);
@@ -36,8 +36,6 @@ export default function ProductDetail({ product }: { product: Promise<Product> }
         selectedColor: "",
         quantity: Number("")
     });
-    const productDetail = use(product);
-    console.log("Product Detail:", productDetail);
     function handleBuyForm(formData: FormData) {
         const values = {
             productId: formData.get("productId") as string,
@@ -68,14 +66,14 @@ export default function ProductDetail({ product }: { product: Promise<Product> }
                         <div>
                             <div className="bg-muted rounded-lg overflow-hidden aspect-[3/4] mb-4">
                                 <img
-                                    src={productDetail.images[imageShow].url || "/placeholder.svg"}
-                                    alt={productDetail.images[imageShow].name || "Product Image"}
+                                    src={product.images[imageShow].url || "/placeholder.svg"}
+                                    alt={product.images[imageShow].name || "Product Image"}
                                     className="w-full h-full object-cover"
                                 />
                             </div>
 
                             <div className="grid grid-cols-4 gap-3">
-                                {productDetail.images.map((image, i) => (
+                                {product.images.map((image, i) => (
                                     <div
                                         key={i}
                                         className="bg-muted rounded-lg aspect-square overflow-hidden cursor-pointer hover:opacity-75 transition-opacity"
@@ -96,36 +94,36 @@ export default function ProductDetail({ product }: { product: Promise<Product> }
                         {/* Product Info */}
                         <div>
                             <Form action={handleBuyForm}>
-                                <input type="hidden" name="productId" value={productDetail.id} />
+                                <input type="hidden" name="productId" value={product.id} />
                                 <input type="hidden" name="selectedSize" value={selectedSize} />
                                 <input type="hidden" name="selectedColor" value={selectedColor} />
-                                <input type="hidden" name="name" value={productDetail.name} />
+                                <input type="hidden" name="name" value={product.name} />
                                 <input type="hidden" name="quantity" value={quantity} />
                                 <div className="mb-6">
                                     <div className="flex items-center gap-3 mb-3">
-                                        <h1 className="text-4xl font-bold text-primary">{productDetail.name}</h1>
+                                        <h1 className="text-4xl font-bold text-primary">{product.name}</h1>
                                         <button className="p-2 hover:bg-muted rounded-lg transition-colors">
                                             <Heart size={24} className="text-muted-foreground hover:text-accent" />
                                         </button>
                                     </div>
                                     <div className="flex items-center gap-2 mb-3">
-                                        {[...Array(productDetail.rating)].map((_, i) => (
+                                        {[...Array(product.rating)].map((_, i) => (
                                             <span key={i} className="text-accent text-lg">
                                                 ★
                                             </span>
                                         ))}
-                                        <span className="text-muted-foreground ml-2">({productDetail.rating} reviews)</span>
+                                        <span className="text-muted-foreground ml-2">({product.rating} reviews)</span>
                                     </div>
-                                    <p className="text-3xl font-bold text-primary">NRs. {productDetail.price}</p>
+                                    <p className="text-3xl font-bold text-primary">NRs. {product.price}</p>
                                 </div>
 
-                                <p className="text-muted-foreground text-lg leading-relaxed mb-8">{productDetail.description}</p>
+                                <p className="text-muted-foreground text-lg leading-relaxed mb-8">{product.description}</p>
 
                                 {/* Color Selection */}
-                                <VariantButton colors={productDetail.colors} handleData={handleSelectedColor} />
+                                <VariantButton colors={product.colors} handleData={handleSelectedColor} />
 
                                 {/* Size Selection */}
-                                <VariantButton sizes={productDetail.sizes} handleData={handleSelectedSize} />
+                                <VariantButton sizes={product.sizes} handleData={handleSelectedSize} />
 
                                 {/* Quantity */}
                                 <QuantityButton handleData={handleSelectedQuantity} />

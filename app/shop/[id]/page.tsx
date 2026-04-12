@@ -1,10 +1,23 @@
 import { Suspense } from 'react'
 import ProductDetail from './productDetailUI'
 import { notFound } from 'next/navigation';
+import prisma from '@/lib/prisma';
 
 async function getProduct({ params }: { params: Promise<{ id: string }> }) {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product/${(await params).id}`, { method: "GET" });
-    const product = await res.json();
+    const product = await prisma.product.findUnique({
+        where: {
+            id: (await params).id
+        },
+        include: {
+            images: {
+                select: {
+                    url: true,
+                    name: true,
+                    resource_type: true
+                }
+            }
+        }
+    });
     if (!product) return notFound();
     return product;
 }
