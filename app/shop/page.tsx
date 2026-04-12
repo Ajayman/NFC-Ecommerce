@@ -1,17 +1,29 @@
 import { Suspense } from 'react'
 import ShopUI from './shopUI'
 import { notFound } from 'next/navigation';
+import prisma from '@/lib/prisma';
 
 async function Shop() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/product`, { method: "GET" });
-    const products = await res.json();
+    const products = await prisma.product.findMany({
+        include: {
+            images: {
+                select: {
+                    url: true,
+                    name: true,
+                    resource_type: true
+                }
+            }
+        }
+    });
     if (!products)
         return notFound();
+    console.log(products);
     return products;
+
 }
 
-export default function ShopPage() {
-    const products = Shop();
+export default async function ShopPage() {
+    const products = await Shop();
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <ShopUI allProducts={products} />

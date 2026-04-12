@@ -7,7 +7,6 @@ import { use } from "react";
 
 type Product = {
     id: string | number | bigint | null | undefined;
-    products: any;
     name: string,
     description: string,
     productType: string[],
@@ -39,12 +38,11 @@ const sortOptions = [
     { id: "newest", label: "Newest" },
 ]
 
-export default function Shop({ allProducts }: { allProducts: Promise<Product[]> }) {
-    const products = use(allProducts);
+export default function Shop({ allProducts }: { allProducts: Product[] }) {
     const [selectedCategory, setSelectedCategory] = useState("all")
     const [selectedSort, setSelectedSort] = useState("featured")
     const [showFilters, setShowFilters] = useState(false)
-    const filteredProducts = selectedCategory === "all" ? products : products.filter((p) => p.category.some((c) => c.toLowerCase().includes(selectedCategory.toLowerCase())))
+    const filteredProducts = selectedCategory === "all" ? allProducts : allProducts.filter((p) => p.category.some((c) => c.toLowerCase().includes(selectedCategory.toLowerCase())))
     const sortedProducts = [...filteredProducts].sort((a, b) => {
         if (selectedSort === "price-low") return a.price - b.price
         if (selectedSort === "price-high") return b.price - a.price
