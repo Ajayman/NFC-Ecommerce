@@ -2,20 +2,19 @@
 import { Heart } from "lucide-react"
 import VariantButton from "./variantButton"
 import QuantityButton from "./quantityButton"
-import { use } from "react"
 import { useState } from "react"
 import BuyNowButton from "./buyNowButton"
 import Form from "next/form"
 type Product = {
-    id: number,
+    id: string,
     name: string,
     price: number,
-    images: [{
+    images: {
         url: string,
         name: string,
         resource_type: string
-    }],
-    category: string,
+    }[],
+    category: string[],
     description: string,
     rating: number,
     sizes: string[],

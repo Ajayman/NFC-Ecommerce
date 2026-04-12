@@ -19,11 +19,12 @@ async function getProduct({ params }: { params: Promise<{ id: string }> }) {
         }
     });
     if (!product) return notFound();
+    console.log("Yeta xa hai product", product);
     return product;
 }
 
-export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    const product = getProduct({ params });
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const product = await getProduct({ params });
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <ProductDetail product={product} />
