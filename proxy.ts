@@ -8,7 +8,6 @@ const publicRoutes = [
     "/contact",
     "/shop",
     "/admin/login",
-    "/admin/signup",
     "/api/login",
     "/api/register",
 ];

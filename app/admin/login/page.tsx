@@ -10,7 +10,6 @@ import { adminLoginState } from "@/app/schema";
 import { useActionState } from "react";
 import { SubmitLoginAction } from "@/app/actions/login-action";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 export default function AdminLogin() {
     const [formState, formAction, pending] = useActionState<adminLoginState, FormData>(SubmitLoginAction, {
         values: {
