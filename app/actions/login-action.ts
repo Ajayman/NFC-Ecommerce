@@ -35,7 +35,11 @@ export async function SubmitLoginAction(_prevState: adminLoginState, formData: F
         console.log("login action", res)
         if (res.success) {
             cookieStore.set("Authorization", res.token, {
+                secure: process.env.NODE_ENV === "production",
+                httpOnly: true,
+                sameSite: "lax",
                 expires: Date.now() + 60 * 60 * 1000,
+                path: "/",
             });
         }
     } catch (error) {
