@@ -16,7 +16,6 @@ import 'next-cloudinary/dist/cld-video-player.css';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { z } from 'zod';
 
 // ---- Types ----
 
