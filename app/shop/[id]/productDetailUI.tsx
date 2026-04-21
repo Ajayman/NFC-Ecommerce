@@ -63,7 +63,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                     <div className="grid md:grid-cols-2 gap-12">
                         {/* Product Image */}
                         <div>
-                            <div className="bg-muted rounded-lg overflow-hidden aspect-[3/4] mb-4">
+                            <div className="bg-muted rounded-lg overflow-hidden aspect-[3/5] mb-4">
                                 <img
                                     src={product.images[imageShow].url || "/placeholder.svg"}
                                     alt={product.images[imageShow].name || "Product Image"}
@@ -75,7 +75,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                                 {product.images.map((image, i) => (
                                     <div
                                         key={i}
-                                        className="bg-muted rounded-lg aspect-square overflow-hidden cursor-pointer hover:opacity-75 transition-opacity"
+                                        className="bg-muted rounded-lg aspect-[3/4] overflow-hidden cursor-pointer hover:opacity-75 transition-opacity"
                                     >
                                         <input type="image" src={image.url} onClick={() => setImageShow(i)}
                                             alt={`View ${i + 1}`}
@@ -107,7 +107,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                                     </div>
                                     <div className="flex items-center gap-2 mb-3">
                                         {[...Array(product.rating)].map((_, i) => (
-                                            <span key={i} className="text-accent text-lg">
+                                            <span key={i} className="text-teal-400 text-lg">
                                                 ★
                                             </span>
                                         ))}

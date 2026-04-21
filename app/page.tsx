@@ -40,7 +40,6 @@ export default async function Home() {
       }
     }
   });
-  console.log(JSON.stringify(featuredCollections))
   return (
     <main className="bg-cyan-50">
       {/* Full Viewport Image */}
@@ -94,7 +93,7 @@ export default async function Home() {
                 {collection.name}
               </h3>
               <p className="text-muted-foreground mb-3">{collection.description}</p>
-              <div className="flex items-center gap-2 text-accent font-semibold">
+              <div className="flex items-center gap-2 font-semibold">
                 View Collection
                 <ArrowRight size={16} />
               </div>

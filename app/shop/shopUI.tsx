@@ -80,7 +80,7 @@ export default function Shop({ allProducts }: { allProducts: Product[] }) {
                                         onClick={() => setSelectedCategory(category.id)}
                                         className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${selectedCategory === category.id
                                             ? "bg-primary text-primary-foreground"
-                                            : "hover:bg-muted text-foreground"
+                                            : "hover:bg-teal-200 text-foreground"
                                             }`}
                                     >
                                         {category.label}
@@ -117,7 +117,7 @@ export default function Shop({ allProducts }: { allProducts: Product[] }) {
                             <div className="grid md:grid-cols-3 gap-8">
                                 {sortedProducts.map((product) => (
                                     <Link key={product.id} href={`/shop/${product.id}`} className="group bg-background hover:bg-red-50 px-2 py-2 rounded-lg">
-                                        <div className="relative overflow-hidden rounded-lg mb-4 aspect-[3/4] ">
+                                        <div className="relative overflow-hidden rounded-lg mb-4 aspect-[3/5] ">
                                             <img
                                                 src={product.images[0].url || "/placeholder.svg"}
                                                 alt={product.name}
@@ -132,12 +132,12 @@ export default function Shop({ allProducts }: { allProducts: Product[] }) {
                                         </h3>
                                         <div className="flex items-center gap-1 mb-2">
                                             {[...Array(product.rating)].map((_, i) => (
-                                                <span key={i} className="text-accent">
+                                                <span key={i} className="text-teal-300">
                                                     ★
                                                 </span>
                                             ))}
                                         </div>
-                                        <p className="text-muted-foreground text-sm">Premium Collection</p>
+                                        {/* <p className="text-muted-foreground text-sm">Premium Collectionssssss</p> */}
                                     </Link>
                                 ))}
                             </div>
