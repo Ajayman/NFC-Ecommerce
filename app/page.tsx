@@ -1,7 +1,11 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import prisma from "@/lib/prisma";
-
+export const metadata: Metadata = {
+  title: "Nina Fashion Collection - Premium Fashion Boutique",
+  description: "Curated collections for all occasions, timeless elegance, and exquisite design",
+}
 export default async function Home() {
   const featuredCollections = await prisma.product.findMany(
     {
