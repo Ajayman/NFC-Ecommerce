@@ -42,17 +42,9 @@ export default async function Home() {
   });
   return (
     <main className="bg-cyan-50">
-      {/* Full Viewport Image */}
-      <section className="relative w-full h-screen overflow-hidden">
-        {/* <img
-          src="/1.jpg"
-          alt="Boutique Fashion Collection"
-          className="w-full h-full object-cover"
-        /> */}
-        <video className="relative" width="100%" height="100%" autoPlay loop muted>
-          <source src={homeData?.video?.url} type="video/mp4" />
-        </video>
-      </section>
+      <video className="h-screen w-full object-cover" autoPlay loop muted>
+        <source src={homeData?.video?.url} type="video/mp4" />
+      </video>
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-b from-secondary/20 to-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -93,7 +85,7 @@ export default async function Home() {
                 {collection.name}
               </h3>
               <p className="text-muted-foreground mb-3">{collection.description}</p>
-              <div className="flex items-center gap-2 font-semibold">
+              <div className="flex items-center gap-2s font-semibold">
                 View Collection
                 <ArrowRight size={16} />
               </div>

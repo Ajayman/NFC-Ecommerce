@@ -111,7 +111,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                                                 ★
                                             </span>
                                         ))}
-                                        <span className="text-muted-foreground ml-2">({product.rating} reviews)</span>
+                                        <span className="text-muted-foreground ml-2">({product.rating} rating)</span>
                                     </div>
                                     <p className="text-3xl font-bold text-primary">NRs. {product.price}</p>
                                 </div>

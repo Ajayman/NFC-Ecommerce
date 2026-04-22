@@ -35,9 +35,9 @@ export default function Header() {
 
                     {/* Cart */}
                     <div className="flex items-center gap-4">
-                        <button className="p-2 text-red-50 hover:text-red-200 rounded-lg transition-colors">
+                        {/* <button className="p-2 text-red-50 hover:text-red-200 rounded-lg transition-colors">
                             <ShoppingBag size={20} />
-                        </button>
+                        </button> */}
 
                         {/* Mobile Menu Button */}
                         <button
@@ -51,31 +51,31 @@ export default function Header() {
 
                 {/* Mobile Navigation */}
                 {isOpen && (
-                    <nav className="md:hidden pb-4 flex flex-col gap-3">
+                    <nav className="md:hidden pb-4 flex text-ce flex-col gap-3">
                         <Link
                             href="/"
-                            className="text-sm font-medium hover:text-accent transition-colors block py-2"
+                            className="text-sm font-medium text-red-50 hover:text-accent transition-colors block py-2"
                             onClick={() => setIsOpen(false)}
                         >
                             Home
                         </Link>
                         <Link
                             href="/shop"
-                            className="text-sm font-medium hover:text-accent transition-colors block py-2"
+                            className="text-sm font-medium text-red-50 hover:text-accent transition-colors block py-2"
                             onClick={() => setIsOpen(false)}
                         >
                             Shop
                         </Link>
                         <Link
                             href="/about"
-                            className="text-sm font-medium hover:text-accent transition-colors block py-2"
+                            className="text-sm font-medium text-red-50 hover:text-accent transition-colors block py-2"
                             onClick={() => setIsOpen(false)}
                         >
                             About
                         </Link>
                         <Link
                             href="/contact"
-                            className="text-sm font-medium hover:text-accent transition-colors block py-2"
+                            className="text-sm font-medium text-red-50 hover:text-accent transition-colors block py-2"
                             onClick={() => setIsOpen(false)}
                         >
                             Contact
