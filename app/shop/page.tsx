@@ -14,7 +14,7 @@ async function Shop() {
         include: {
             images: {
                 select: {
-                    url: true, s
+                    url: true,
                     name: true,
                     resource_type: true
                 }
