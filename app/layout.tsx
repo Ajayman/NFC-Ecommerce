@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 const _playfair = Playfair_Display({ subsets: ["latin"] })
+
 export const metadata: Metadata = {
   title: "Nina Fashion Collection - Premium Fashion Boutique",
   description: "Curated collections for all occasions, timeless elegance, and exquisite design",
